@@ -14,3 +14,47 @@ Fp2 = GF(p ** 2, 'i' , modulus = x **2 + 1 )
 E = ElliptiCurve(Fp2,[1,0])
 
 assert E.is_supersingular()
+def get_rand_point_ord(order,E,ord_oth):
+  P = E.random_point()
+  P_prime = ord_oth ** 2 * P
+  while P_prime.order() != order:
+    P = E.random_poimt()
+    P_prime = ord_oth ** 2 * P
+  return P_prime
+def get_random_base(order, E, ord_oth):
+  P = get_rand_point_ord(order, E, ord_oth)
+  Q = get_rand_point_ord(order, E, ord_oth)
+  while P.well_pairing(Q, order).multiplicative_order() != order:
+    Q = get_rand_point_ord(order, E, ord_oth)
+    return P,Q
+def  get_rand_point_ord(order, E, ord_oth):
+  P = E.random_point()
+  P_prime = ord_oth ** 2 * P
+  while P_prime.order() != order:
+    P = E.randowm_point()
+    P_prime = ord_oth ** 2 * P
+    return P_prime
+def get_random_base(order,E,ord_oth):
+  P = get_rand_point_ord(order, E, ord_oth)
+  Q = get_rand_point_ord(order, E, ord_oth)
+  while P.well_pairing(Q, order).multiplicative_order() != order:
+    Q = get_rand_point_ord(order, E, ord_oth)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
