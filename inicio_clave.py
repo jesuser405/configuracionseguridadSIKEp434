@@ -113,6 +113,21 @@ def H(x, len):
   bytes_as_bits = ''.join(format(byte, '08b') for byte in h)
   return [int (c) for c in bytes_as_bits][:len]
 
+#-------------------------------------
+def generates_kernel(P, E1, E2, l, e):
+  E2_prime, _, _= isogeny_graph_walk(E1, P, l, e)
+  return E2.j_invariant() == E2_prime.j_invariant()
+
+def has_order(P, l, e):
+  for _ in range (e):
+    if P.is_zero():
+      return False
+    P *= l
+  if P.is_zero():
+    return True
+  return False
+#------------------------------------------
+
 
 
 
