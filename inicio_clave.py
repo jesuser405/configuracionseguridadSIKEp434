@@ -66,8 +66,41 @@ class Entity:
     self.l = params[name][2]
     self.e = params[name][3]
     
-    
-    
+    self.sk = random.randrange(self.l ** self.e)
+    self.S = self.P + self.sk * self.Q
+    #assert self.l ** self.e == self.S.order()
+  def gen_pub_key(self, other):
+    return isogeny_graph_walk(E, self.S, self.l, self.e, other[0], other[1])
+  def gen_shared_key(self, peer):
+    S = peer.pk[1] + self.sk + peer.pk[2]
+    shared_curve, _, _ = isogeny_graph_walk(peer.pk[0], S, self.l,self.e)
+    return shared_curve.j_invariant()
+
+#-------------------------------------------------------
+
+t0 = time.perf_counter()
+
+print('Started generation of PKA')
+A = Entity ('A')
+print('Started generation of PKB')
+B = Entity('B')
+print('Started generation of secA')
+secA = A.gen_shared_key(B)
+print('Started generation of secB')
+secB = B,gen_shared_key(A)
+
+t1 = time.perf_counter()
+assert secA == secB
+print("Time elapsed (s):", t1 - t0)
+
+#-----------------------------
+Started generation of PKA 
+Started generation of PKB 
+Started generation of secA 
+Started generation of secB
+Time elapsed (s) : 7.9531789460001572
+
+
 
 
 
@@ -103,7 +136,6 @@ def get_random_base(order,E,ord_oth):
   Q = get_rand_point_ord(order, E, ord_oth)
   while P.well_pairing(Q, order).multiplicative_order() != order:
     Q = get_rand_point_ord(order, E, ord_oth)
-
 
 
 
