@@ -100,10 +100,18 @@ Started generation of secA
 Started generation of secB
 Time elapsed (s) : 7.9531789460001572
 
+#-----------------------------------------
 
-
-
-
+def G (x):
+  h_obj = SHA3_256.new()
+  h_obj.update(f'{x}' .encode())
+  return h_obj.hexdigest()
+def H(x, len):
+  h_obj = SHA3_256.new()
+  h_obj.update(x.encode())
+  h = h_obj.digest()
+  bytes_as_bits = ''.join(format(byte, '08b') for byte in h)
+  return [int (c) for c in bytes_as_bits][:len]
 
 
 
